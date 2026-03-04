@@ -1,0 +1,12 @@
+id,country,ticker,year,value
+1,egypt,cpi_imf,2015-01-01,11.0
+2,egypt,cpi_imf,2016-01-01,10.2
+3,egypt,cpi_imf,2017-01-01,23.5
+4,egypt,cpi_imf,2018-01-01,20.9
+5,egypt,cpi_imf,2019-01-01,13.9
+6,egypt,cpi_imf,2020-01-01,5.7
+7,egypt,cpi_imf,2021-01-01,4.5
+8,egypt,cpi_imf,2022-01-01,8.5
+9,egypt,cpi_imf,2023-01-01,24.4
+10,egypt,cpi_imf,2024-01-01,33.3
+11,egypt,cpi_imf,2025-01-01,20.4
