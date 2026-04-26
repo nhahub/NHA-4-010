@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ,id,region,ticker,date,PCPIPCH
 0,1,egypt,cpi_imf,2016-01-01,10.2
 1,2,egypt,cpi_imf,2016-01-02,10.2
@@ -3768,3 +3769,17 @@
 3766,3767,egypt,cpi_imf,2026-04-24,20.4
 3767,3768,egypt,cpi_imf,2026-04-25,20.4
 3768,3769,egypt,cpi_imf,2026-04-26,20.4
+=======
+,id,region,ticker,date,value
+0,1,egypt,cpi_imf,2015-01-01,11.0
+1,2,egypt,cpi_imf,2016-01-01,10.2
+2,3,egypt,cpi_imf,2017-01-01,23.5
+3,4,egypt,cpi_imf,2018-01-01,20.9
+4,5,egypt,cpi_imf,2019-01-01,13.9
+5,6,egypt,cpi_imf,2020-01-01,5.7
+6,7,egypt,cpi_imf,2021-01-01,4.5
+7,8,egypt,cpi_imf,2022-01-01,8.5
+8,9,egypt,cpi_imf,2023-01-01,24.4
+9,10,egypt,cpi_imf,2024-01-01,33.3
+10,11,egypt,cpi_imf,2025-01-01,20.4
+>>>>>>> 0558a51495df86d453b692663ba3f9dcddcd3d14
