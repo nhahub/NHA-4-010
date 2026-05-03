@@ -39,3 +39,4 @@ id,region,ticker,date,value
 38,euro_zone,interest_rate,1/4/2025,3287843.93157356
 39,euro_zone,interest_rate,1/7/2025,3297683.80342174
 40,euro_zone,interest_rate,1/10/2025,3304260.25286436
+41,euro_zone,interest_rate,1/1/2026,3309009.57951069

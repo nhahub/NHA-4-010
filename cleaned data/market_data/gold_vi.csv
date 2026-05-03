@@ -3765,6 +3765,11 @@ id,region,ticker,date,value
 3764,global,gold_vi,21/04/2026,29.31
 3765,global,gold_vi,22/04/2026,27.09
 3766,global,gold_vi,23/04/2026,27.87
-3767,global,gold_vi,24/04/2026,27.87
-3768,global,gold_vi,25/04/2026,27.87
-3769,global,gold_vi,26/04/2026,27.87
+3767,global,gold_vi,24/04/2026,25.88
+3768,global,gold_vi,25/04/2026,25.88
+3769,global,gold_vi,26/04/2026,25.88
+3770,global,gold_vi,27/04/2026,25.37
+3771,global,gold_vi,28/04/2026,26.19
+3772,global,gold_vi,29/04/2026,27.77
+3773,global,gold_vi,30/04/2026,26.64
+3774,global,gold_vi,01/05/2026,26.64

@@ -39,3 +39,4 @@ id,region,ticker,date,value
 38,usa,nominal_gdp_historical_data_annual_change,2025-04-01,30485.729
 39,usa,nominal_gdp_historical_data_annual_change,2025-07-01,31098.027
 40,usa,nominal_gdp_historical_data_annual_change,2025-10-01,31422.526
+41,usa,nominal_gdp_historical_data_annual_change,2026-01-01,31856.257

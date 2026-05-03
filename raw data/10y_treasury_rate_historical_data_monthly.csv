@@ -2567,3 +2567,16 @@ id,region,ticker,date,value
 2679,usa,10y_treasury_rate_historical_data_monthly,2026-04-08,4.29
 2680,usa,10y_treasury_rate_historical_data_monthly,2026-04-09,4.29
 2681,usa,10y_treasury_rate_historical_data_monthly,2026-04-10,4.31
+2682,usa,10y_treasury_rate_historical_data_monthly,2026-04-13,4.3
+2683,usa,10y_treasury_rate_historical_data_monthly,2026-04-14,4.26
+2684,usa,10y_treasury_rate_historical_data_monthly,2026-04-15,4.29
+2685,usa,10y_treasury_rate_historical_data_monthly,2026-04-16,4.32
+2686,usa,10y_treasury_rate_historical_data_monthly,2026-04-17,4.26
+2687,usa,10y_treasury_rate_historical_data_monthly,2026-04-20,4.26
+2688,usa,10y_treasury_rate_historical_data_monthly,2026-04-21,4.3
+2689,usa,10y_treasury_rate_historical_data_monthly,2026-04-22,4.3
+2690,usa,10y_treasury_rate_historical_data_monthly,2026-04-23,4.34
+2691,usa,10y_treasury_rate_historical_data_monthly,2026-04-24,4.31
+2692,usa,10y_treasury_rate_historical_data_monthly,2026-04-27,4.35
+2693,usa,10y_treasury_rate_historical_data_monthly,2026-04-28,4.36
+2694,usa,10y_treasury_rate_historical_data_monthly,2026-04-29,4.42

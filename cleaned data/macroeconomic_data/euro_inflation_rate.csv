@@ -122,3 +122,4 @@ id,region,ticker,date,value
 121,euro_zone,interest_rate,1/1/2026,2.1
 122,euro_zone,interest_rate,1/2/2026,2.0
 123,euro_zone,interest_rate,1/3/2026,2.8
+124,euro_zone,interest_rate,1/4/2026,2.9

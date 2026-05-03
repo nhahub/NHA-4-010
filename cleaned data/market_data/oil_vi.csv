@@ -3765,6 +3765,11 @@ id,region,ticker,date,value
 3764,global,oil_vi,21/04/2026,85.57
 3765,global,oil_vi,22/04/2026,76.77
 3766,global,oil_vi,23/04/2026,78.67
-3767,global,oil_vi,24/04/2026,78.67
-3768,global,oil_vi,25/04/2026,78.67
-3769,global,oil_vi,26/04/2026,78.67
+3767,global,oil_vi,24/04/2026,75.83
+3768,global,oil_vi,25/04/2026,75.83
+3769,global,oil_vi,26/04/2026,75.83
+3770,global,oil_vi,27/04/2026,73.11
+3771,global,oil_vi,28/04/2026,70.5
+3772,global,oil_vi,29/04/2026,75.96
+3773,global,oil_vi,30/04/2026,75.08
+3774,global,oil_vi,01/05/2026,75.08
