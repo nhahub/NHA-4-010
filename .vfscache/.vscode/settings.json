@@ -1,0 +1,6 @@
+{
+  "python.analysis.stubPath": "d:\\GitHub Repos\\DEPI-Final-Project---Gold-and-Oil-Predictions\\.stubs\\pyspark34",
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportMissingModuleSource": "none"
+  }
+}
