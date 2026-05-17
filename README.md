@@ -2,7 +2,7 @@
 ### DEPI Round 4 — MS Data Engineering & AI Track | Final Project
 
 <p align="center">
-  <img src="assets/cover.png" alt="Project Cover" width="100%"/>
+  <img src="assets/Cover.png" alt="Project Cover" width="100%"/>
 </p>
 
 > A full end-to-end machine learning system that ingests, cleans, and models global and local economic data to predict **Gold**, **Brent Crude Oil**, and **8 Global Stock Market** prices — built from scratch by a cross-functional team as part of the DEPI Round 4 Final Project.
