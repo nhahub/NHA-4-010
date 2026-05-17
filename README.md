@@ -2,7 +2,7 @@
 ### DEPI Round 4 — MS Data Engineering & AI Track | Final Project
 
 <p align="center">
-  <img src="Cover.jpg" alt="Project Cover" width="100%"/>
+  <img src="assets/cover.png" alt="Project Cover" width="100%"/>
 </p>
 
 > A full end-to-end machine learning system that ingests, cleans, and models global and local economic data to predict **Gold**, **Brent Crude Oil**, and **8 Global Stock Market** prices — built from scratch by a cross-functional team as part of the DEPI Round 4 Final Project.
@@ -19,7 +19,7 @@
 | Nourhan Habila | [@NourhanHabila](https://github.com/NourhanHabila) |
 | Sara Seoudi | [@saraseoudy74](https://github.com/saraseoudy74) |
 
-> We come from diverse professional backgrounds — shipping, engineering, finance, and technology. This project represents our collective first step into applied machine learning, built with curiosity, persistence, and a great deal of collaboration.
+> We come from diverse professional backgrounds — engineering, biology, finance, science and dentistry. This project represents our collective first step into applied machine learning, built with curiosity, persistence, and a great deal of collaboration.
 
 **Project Supervisor:** Mohamed Hamed | [@MohammedHameds](https://github.com/MohammedHameds)
 
@@ -40,7 +40,7 @@ The pipeline spans five integrated phases:
 ### 🔄 End-to-End Data Flow
 
 <p align="center">
-  <img src="Dataflow.jpg" alt="End-to-End Microsoft Fabric Data Flow" width="100%"/>
+  <img src="assets/Dataflow.jpg" alt="End-to-End Microsoft Fabric Data Flow" width="100%"/>
 </p>
 
 The full solution is implemented end-to-end within **Microsoft Fabric**, covering all seven stages: Data Sources → Data Engineering → Unified Master Table (Lakehouse) → Modeling Layer → Evaluation & Forecasts → Outputs & Visualization → Delivery & Actions (including a Telegram Bot for alerts).
