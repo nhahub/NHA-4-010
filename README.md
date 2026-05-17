@@ -2,7 +2,7 @@
 ### DEPI Round 4 — MS Data Engineering & AI Track | Final Project
 
 <p align="center">
-  <img src="assets/Cover.png" alt="Project Cover" width="100%"/>
+  <img src="assets/Cover.jpeg" alt="Project Cover" width="100%"/>
 </p>
 
 > A full end-to-end machine learning system that ingests, cleans, and models global and local economic data to predict **Gold**, **Brent Crude Oil**, and **8 Global Stock Market** prices — built from scratch by a cross-functional team as part of the DEPI Round 4 Final Project.
@@ -40,7 +40,7 @@ The pipeline spans five integrated phases:
 ### 🔄 End-to-End Data Flow
 
 <p align="center">
-  <img src="assets/Dataflow.jpg" alt="End-to-End Microsoft Fabric Data Flow" width="100%"/>
+  <img src="assets/Dataflow.png" alt="End-to-End Microsoft Fabric Data Flow" width="100%"/>
 </p>
 
 The full solution is implemented end-to-end within **Microsoft Fabric**, covering all seven stages: Data Sources → Data Engineering → Unified Master Table (Lakehouse) → Modeling Layer → Evaluation & Forecasts → Outputs & Visualization → Delivery & Actions (including a Telegram Bot for alerts).
