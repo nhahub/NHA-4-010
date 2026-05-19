@@ -5,6 +5,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 import numpy as np
 import os
+from pathlib import Path
 
 # PAGE CONFIG
 st.set_page_config(
@@ -115,14 +116,22 @@ def base_layout(title="", height=400, **kw):
     )
 
 # DATA LOADERS
-DATA_DIR = os.path.dirname(os.path.abspath(__file__))
+# Base is two levels up from streamlit_app/app.py → repo root
+BASE_DIR        = Path(__file__).resolve().parent.parent
+RAW_DATA_DIR    = BASE_DIR / "raw data"
+CLEANED_MACRO   = BASE_DIR / "cleaned data" / "macroeconomic_data"
+CLEANED_MARKET  = BASE_DIR / "cleaned data" / "market_data"
+AI_DIR          = BASE_DIR / "ai model"
+AI_MODELS_DIR   = AI_DIR / "models"
+AI_VIZ_DIR      = AI_DIR / "visualizations"
+STREAMLIT_DIR   = Path(__file__).resolve().parent  # for files that stay in streamlit_app
 
 @st.cache_data
 def load_all():
     data = {}
 
     # --- Inflation (CBE xlsx) ---
-    inf = pd.read_excel(os.path.join(DATA_DIR, "egy_cbe_inflation_rate.xlsx"), header=None)
+    inf = pd.read_excel(RAW_DATA_DIR / "egy_cbe_inflation_rate.xlsx", header=None)
     inf.columns = ["date","headline","core","regulated","fruits_veg"]
     inf = inf[inf["date"].astype(str).str.strip() != "Date"].copy()
     inf["date"] = pd.to_datetime(inf["date"].astype(str), format="%b %Y", errors="coerce")
@@ -133,7 +142,7 @@ def load_all():
     data["inflation"] = inf
 
     # EGP/USD CBE xlsx
-    egp = pd.read_excel(os.path.join(DATA_DIR, "egy_cbe_egpusd_rate.xlsx"), header=None)
+    egp = pd.read_excel(RAW_DATA_DIR / "egy_cbe_egpusd_rate.xlsx", header=None)
     egp.columns = ["date","rate"]
     egp = egp[egp["date"].astype(str).str.strip() != "Date"].copy()
     egp["date"] = pd.to_datetime(egp["date"], errors="coerce")
@@ -142,14 +151,14 @@ def load_all():
     data["egpusd"] = egp
 
     # CPI
-    cpi = pd.read_csv(os.path.join(DATA_DIR, "egy_cpi.csv"))
+    cpi = pd.read_csv(RAW_DATA_DIR / "egy_cpi.csv")
     cpi.columns = ["year","cpi"]
     cpi["year"] = pd.to_numeric(cpi["year"], errors="coerce")
     cpi = cpi.dropna().sort_values("year").reset_index(drop=True)
     data["cpi"] = cpi
 
     # Egyptian Gold (raw format from investing.com)
-    eg_gold = pd.read_csv(os.path.join(DATA_DIR, "egy_gold_prices.csv"))
+    eg_gold = pd.read_csv(RAW_DATA_DIR / "egy_gold_prices.csv")
     # Normalise column names whether raw or cleaned
     eg_gold.columns = eg_gold.columns.str.strip()
     col_map = {}
@@ -189,14 +198,14 @@ def load_all():
         return df
 
     # Global Gold
-    data["global_gold"] = load_yf_csv(os.path.join(DATA_DIR, "global_gold_prices.csv"))
+    data["global_gold"] = load_yf_csv(RAW_DATA_DIR / "global_gold_prices.csv")
 
     # Oil prices
-    data["brent"] = load_yf_csv(os.path.join(DATA_DIR, "global_brent_oil_prices.csv"))
-    data["wti"]   = load_yf_csv(os.path.join(DATA_DIR, "global_wti_price_prices.csv"))
+    data["brent"] = load_yf_csv(RAW_DATA_DIR / "global_brent_oil_prices.csv")
+    data["wti"]   = load_yf_csv(RAW_DATA_DIR / "global_wti_price_prices.csv")
 
     # OPEC (monthly, may not have date column)
-    opec_raw = pd.read_csv(os.path.join(DATA_DIR, "opec_oil_prices.csv"))
+    opec_raw = pd.read_csv(STREAMLIT_DIR / "opec_oil_prices.csv")
     opec_raw.columns = opec_raw.columns.str.strip()
     # Rename date column if present
     for c in opec_raw.columns:
@@ -212,34 +221,34 @@ def load_all():
     data["opec"] = opec_raw[["date","price_usd"]].dropna().sort_values("date").reset_index(drop=True)
 
     # Avg brent in budget
-    budget_brent = pd.read_csv(os.path.join(DATA_DIR, "egy_avg_brent_price_in_budget.csv"))
+    budget_brent = pd.read_csv(STREAMLIT_DIR / "egy_avg_brent_price_in_budget.csv")
     budget_brent.columns = budget_brent.columns.str.strip()
     data["budget_brent"] = budget_brent
 
     # Subsidies
-    elec = pd.read_excel(os.path.join(DATA_DIR, "egy_subsidies_on_electricity_expected_vs_actual.xlsx"))
+    elec = pd.read_excel(STREAMLIT_DIR / "egy_subsidies_on_electricity_expected_vs_actual.xlsx")
     elec.columns = ["year","planned_elec","actual_elec"]
     elec["year"] = elec["year"].astype(str).str.strip()
     data["sub_elec"] = elec
 
-    petro = pd.read_excel(os.path.join(DATA_DIR, "egy_subsidies_on_petroleum_products_expected_vs_actual.xlsx"))
+    petro = pd.read_excel(STREAMLIT_DIR / "egy_subsidies_on_petroleum_products_expected_vs_actual.xlsx")
     petro.columns = ["year","planned_petro","actual_petro"]
     petro["year"] = petro["year"].astype(str).str.strip()
     data["sub_petro"] = petro
 
     # FX rates (raw yfinance or cleaned)
     fx_files = {
-        "EUR/USD": "global_eurusd_rate_prices.csv",
-        "GBP/USD": "global_gbpusd_rate_prices.csv",
-        "JPY/USD": "global_jpyusd_rate_prices.csv",
-        "CNY/USD": "global_cnyusd_rate_prices.csv",
-        "CHF/USD": "global_chfusd_rate_prices.csv",
-        "NOK/USD": "global_nokusd_rate_prices.csv",
-        "RUB/USD": "global_rubusd_rate_prices.csv",
+        "EUR/USD": str(RAW_DATA_DIR / "global_eurusd_rate_prices.csv"),
+        "GBP/USD": str(RAW_DATA_DIR / "global_gbpusd_rate_prices.csv"),
+        "JPY/USD": str(RAW_DATA_DIR / "global_jpyusd_rate_prices.csv"),
+        "CNY/USD": str(RAW_DATA_DIR / "global_cnyusd_rate_prices.csv"),
+        "CHF/USD": str(RAW_DATA_DIR / "global_chfusd_rate_prices.csv"),
+        "NOK/USD": str(RAW_DATA_DIR / "global_nokusd_rate_prices.csv"),
+        "RUB/USD": str(RAW_DATA_DIR / "global_rubusd_rate_prices.csv"),
     }
     fx_all = {}
     for name, fname in fx_files.items():
-        fx_all[name] = load_yf_csv(os.path.join(DATA_DIR, fname))
+        fx_all[name] = load_yf_csv(fname)
     data["fx"] = fx_all
 
     return data
@@ -740,8 +749,7 @@ elif page == "🤖 AI Model":
 
     @st.cache_data
     def load_master_ai():
-        DATA_DIR_AI = os.path.dirname(os.path.abspath(__file__))
-        df = pd.read_csv(os.path.join(DATA_DIR_AI, "new_master_table.csv"))
+        df = pd.read_csv(AI_DIR / "new_master_table.csv")
         df["date"] = pd.to_datetime(df["date"])
         df = df.sort_values("date").reset_index(drop=True)
         new_cols = {}
@@ -775,13 +783,12 @@ elif page == "🤖 AI Model":
 
     @st.cache_resource
     def load_models_ai():
-        DATA_DIR_AI = os.path.dirname(os.path.abspath(__file__))
         models = {}
         for name, fname in [
             ("gold", "standalone_gold_price_top_features_model.pkl"),
             ("oil",  "standalone_oil_price_top_model.pkl"),
         ]:
-            path = os.path.join(DATA_DIR_AI, fname)
+            path = AI_MODELS_DIR / fname
             if os.path.exists(path):
                 with open(path, "rb") as f:
                     m = pickle.load(f)
@@ -933,8 +940,6 @@ elif page == "🤖 AI Model":
             with open(path, "rb") as f:
                 return base64.b64encode(f.read()).decode()
 
-        DATA_DIR_AI = os.path.dirname(os.path.abspath(__file__))
-
         # Gold Model Performance 
         st.markdown('<div class="section-header">🥇 Gold Price Forecasting — Model Results</div>', unsafe_allow_html=True)
 
@@ -966,7 +971,7 @@ elif page == "🤖 AI Model":
             </div>""", unsafe_allow_html=True)
 
         st.markdown("")
-        gold_img_path = os.path.join(DATA_DIR_AI, "standalone_gold_model_price_prediction.png")
+        gold_img_path = AI_VIZ_DIR / "standalone_gold_model_price_prediction.png"
         if os.path.exists(gold_img_path):
             st.image(gold_img_path, use_container_width=True,
                      caption="Gold Price Forecasting — Actual vs Predicted (Jan–Apr 2026)")
@@ -1005,7 +1010,7 @@ elif page == "🤖 AI Model":
             </div>""", unsafe_allow_html=True)
 
         st.markdown("")
-        oil_img_path = os.path.join(DATA_DIR_AI, "standalone_oil_price_prediction_model.png")
+        oil_img_path = AI_VIZ_DIR / "standalone_oil_price_prediction_model.png"
         if os.path.exists(oil_img_path):
             st.image(oil_img_path, use_container_width=True,
                      caption="Brent Oil Forecasting — Actual vs Predicted (Jan–Apr 2026)")
@@ -1016,7 +1021,7 @@ elif page == "🤖 AI Model":
 
         # Correlation Heatmap
         st.markdown('<div class="section-header">🔗 Feature Correlation Heatmap</div>', unsafe_allow_html=True)
-        corr_img_path = os.path.join(DATA_DIR_AI, "correlation_heatmap.png")
+        corr_img_path = AI_DIR / "correlation_heatmap.png"
         if os.path.exists(corr_img_path):
             st.image(corr_img_path, use_container_width=True,
                      caption="Correlation Matrix — All Model Features")
@@ -1064,16 +1069,14 @@ elif page == "📊 Stock Markets":
 
     @st.cache_data
     def load_stocks_data():
-        DATA_DIR_S = os.path.dirname(os.path.abspath(__file__))
-        df = pd.read_csv(os.path.join(DATA_DIR_S, "new_master_table_stocks.csv"))
+        df = pd.read_csv(AI_DIR / "new_master_table_stocks.csv")
         df["date"] = pd.to_datetime(df["date"], dayfirst=False, format="mixed", errors="coerce")
         df = df.sort_values("date").reset_index(drop=True)
         return df
 
     @st.cache_resource
     def load_stock_model(model_name):
-        DATA_DIR_S = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(DATA_DIR_S, f"{model_name}.pkl")
+        path = AI_MODELS_DIR / f"{model_name}.pkl"
         if os.path.exists(path):
             with open(path, "rb") as f:
                 m = pickle.load(f)
