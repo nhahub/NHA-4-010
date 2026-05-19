@@ -255,8 +255,8 @@ with st.sidebar:
     page = st.radio(
         "Navigate",
         ["🏠 Overview", "📈 Inflation & CPI", "💱 Exchange Rates",
-         "🥇 Gold Prices", "🛢️ Oil Prices", "💰 Budget & Subsidies", "🔗 Correlations",
-         "🤖 AI Model", "📊 Stock Markets"],
+        "🥇 Gold Prices", "🛢️ Oil Prices", "🔗 Correlations",
+        "🤖 AI Model", "📊 Stock Markets", "📋 Power BI Report"],
         label_visibility="collapsed"
     )
 
@@ -633,86 +633,6 @@ elif page == "🛢️ Oil Prices":
         st.dataframe(bb, use_container_width=True, hide_index=True)
 
 # BUDGET & SUBSIDIES 
-elif page == "💰 Budget & Subsidies":
-    st.markdown('<div class="page-title"><span class="page-title-icon">💰</span><span class="page-title-text">Budget &amp; Subsidies</span><span class="page-title-sub">Petroleum · Electricity · Planned vs Actual</span></div>', unsafe_allow_html=True)
-
-    sub_e = data["sub_elec"].copy()
-    sub_p = data["sub_petro"].copy()
-    for c in ["planned_elec","actual_elec"]:
-        sub_e[c] = pd.to_numeric(sub_e[c], errors="coerce")
-    for c in ["planned_petro","actual_petro"]:
-        sub_p[c] = pd.to_numeric(sub_p[c], errors="coerce")
-
-    tab1, tab2, tab3 = st.tabs(["Petroleum Subsidies", "Electricity Subsidies", "Combined View"])
-
-    with tab1:
-        st.markdown('<div class="section-header">Petroleum Subsidies: Planned vs Actual (EGP Millions)</div>', unsafe_allow_html=True)
-        fig = go.Figure()
-        fig.add_trace(go.Bar(x=sub_p["year"], y=sub_p["planned_petro"], name="Planned",
-                              marker_color=COLORS[0], opacity=0.8))
-        fig.add_trace(go.Bar(x=sub_p["year"], y=sub_p["actual_petro"],  name="Actual",
-                              marker_color=COLORS[3], opacity=0.9))
-        fig.update_layout(**base_layout(height=420), barmode="group")
-        fig.update_yaxes(tickformat=",")
-        st.plotly_chart(fig, use_container_width=True)
-
-        sub_p["variance"] = sub_p["actual_petro"] - sub_p["planned_petro"]
-        sub_p["var_%"] = (sub_p["variance"] / sub_p["planned_petro"] * 100).round(1)
-        st.markdown('<div class="section-header">Variance (Actual – Planned)</div>', unsafe_allow_html=True)
-        fig2 = go.Figure(go.Bar(
-            x=sub_p["year"], y=sub_p["variance"],
-            marker_color=[COLORS[3] if v > 0 else COLORS[1] for v in sub_p["variance"]],
-            text=sub_p["var_%"].astype(str)+"%", textposition="outside"
-        ))
-        fig2.update_layout(**base_layout(height=340))
-        st.plotly_chart(fig2, use_container_width=True)
-
-    with tab2:
-        st.markdown('<div class="section-header">Electricity Subsidies: Planned vs Actual (EGP Millions)</div>', unsafe_allow_html=True)
-        fig = go.Figure()
-        fig.add_trace(go.Bar(x=sub_e["year"], y=sub_e["planned_elec"], name="Planned",
-                              marker_color=COLORS[4], opacity=0.8))
-        fig.add_trace(go.Bar(x=sub_e["year"], y=sub_e["actual_elec"],  name="Actual",
-                              marker_color=COLORS[2], opacity=0.9))
-        fig.update_layout(**base_layout(height=420), barmode="group")
-        fig.update_yaxes(tickformat=",")
-        st.plotly_chart(fig, use_container_width=True)
-
-    with tab3:
-        merged_sub = pd.merge(sub_p, sub_e, on="year", how="outer")
-        merged_sub["total_planned"] = merged_sub["planned_petro"].fillna(0) + merged_sub["planned_elec"].fillna(0)
-        merged_sub["total_actual"]  = merged_sub["actual_petro"].fillna(0)  + merged_sub["actual_elec"].fillna(0)
-
-        st.markdown('<div class="section-header">Total Subsidies (Petroleum + Electricity)</div>', unsafe_allow_html=True)
-        fig = make_subplots(specs=[[{"secondary_y": True}]])
-        fig.add_trace(go.Bar(x=merged_sub["year"], y=merged_sub["total_planned"],
-                              name="Total Planned", marker_color=COLORS[0], opacity=0.8), secondary_y=False)
-        fig.add_trace(go.Bar(x=merged_sub["year"], y=merged_sub["total_actual"],
-                              name="Total Actual",  marker_color=COLORS[3], opacity=0.9), secondary_y=False)
-        fig.update_layout(**base_layout(height=450), barmode="group")
-        fig.update_yaxes(tickformat=",")
-        st.plotly_chart(fig, use_container_width=True)
-
-        # Pie chart — use latest year with actual data available
-        latest_planned = merged_sub.dropna(subset=["planned_petro","planned_elec"]).iloc[-1]
-        latest_actual  = merged_sub.dropna(subset=["actual_petro","actual_elec"]).iloc[-1]
-        st.markdown(f'<div class="section-header">Subsidy Mix — Planned: {latest_planned["year"]} | Actual: {latest_actual["year"]}</div>', unsafe_allow_html=True)
-        c1, c2 = st.columns(2)
-        for col, label, petro_val, elec_val, yr in [
-            (c1, "Planned", latest_planned["planned_petro"], latest_planned["planned_elec"], latest_planned["year"]),
-            (c2, "Actual",  latest_actual["actual_petro"],   latest_actual["actual_elec"],   latest_actual["year"])
-        ]:
-            figP = go.Figure(go.Pie(
-                labels=["Petroleum","Electricity"],
-                values=[petro_val, elec_val],
-                marker_colors=[COLORS[2], COLORS[4]],
-                hole=0.4
-            ))
-            figP.update_layout(paper_bgcolor=PAPER_BG, font=dict(color=FONT_COLOR),
-                                height=280, margin=dict(t=30,b=10,l=10,r=10),
-                                title=dict(text=f"{label} ({yr})", font=dict(color=FONT_COLOR)))
-            col.plotly_chart(figP, use_container_width=True)
-
 # CORRELATIONS
 elif page == "🔗 Correlations":
     st.markdown('<div class="page-title"><span class="page-title-icon">🔗</span><span class="page-title-text">Correlation Analysis</span><span class="page-title-sub">Matrix · Scatter · Dual-Axis Time Series</span></div>', unsafe_allow_html=True)
@@ -793,6 +713,30 @@ elif page == "🤖 AI Model":
         <span class="page-title-text">AI Prediction Model</span>
         <span class="page-title-sub">Gold & Oil Price Forecasting · LightGBM · 7-Day Outlook</span>
     </div>''', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #2d1f0e 0%, #3d2b10 100%);
+        border: 1px solid #e3b341;
+        border-left: 5px solid #e3b341;
+        border-radius: 10px;
+        padding: 1rem 1.4rem;
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.8rem;
+    ">
+        <span style="font-size:1.3rem; margin-top:0.05rem;">⚠️</span>
+        <div>
+            <span style="color:#e3b341; font-weight:700; font-size:0.95rem; letter-spacing:0.04em;">DISCLAIMER</span><br>
+            <span style="color:#c9d1d9; font-size:0.88rem; line-height:1.6;">
+                In this graph and in order to showcase and demonstrate our work, we used the basic models for oil and gold
+                <strong style="color:#f0f6fc;">(standalone top features model)</strong>
+                which are the inputs for the stock markets' models we have.
+            </span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     @st.cache_data
     def load_master_ai():
@@ -1366,3 +1310,62 @@ elif page == "📊 Stock Markets":
         t["Signal"] = t["predicted_price"].map(lambda x: "🟢 Up" if x > last_price else "🔴 Down")
         st.dataframe(t[["Day","Date","Price","Change","Signal"]],
                      use_container_width=True, hide_index=True)
+
+
+# POWER BI REPORT
+elif page == "📋 Power BI Report":
+    st.markdown('<div class="page-title"><span class="page-title-icon">📋</span><span class="page-title-text">Power BI Report</span><span class="page-title-sub">Egypt Financial Dashboard · Interactive Power BI Embed</span></div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <style>
+    .pbi-wrapper {
+        background: linear-gradient(135deg, #161b22 0%, #1f2937 100%);
+        border: 1px solid #30363d;
+        border-radius: 16px;
+        padding: 6px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(88,166,255,0.08);
+        margin-top: 0.5rem;
+    }
+    .pbi-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px 10px 16px;
+        border-bottom: 1px solid #30363d;
+        margin-bottom: 6px;
+    }
+    .pbi-dot { width:12px; height:12px; border-radius:50%; display:inline-block; }
+    .pbi-title-text {
+        color: #8b949e;
+        font-size: 0.78rem;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+    .pbi-iframe-wrap {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #21262d;
+    }
+    </style>
+
+    <div class="pbi-wrapper">
+        <div class="pbi-header">
+            <span class="pbi-dot" style="background:#f85149;"></span>
+            <span class="pbi-dot" style="background:#e3b341;"></span>
+            <span class="pbi-dot" style="background:#3fb950;"></span>
+            <span class="pbi-title-text">🇪🇬 &nbsp; Egypt Financial Dashboard — Power BI · Gold & Oil Prediction System</span>
+        </div>
+        <div class="pbi-iframe-wrap">
+            <iframe
+                src="https://app.powerbi.com/view?r=eyJrIjoiZTE1NGM5NzMtOWE1NS00ZmZlLTg1MzAtODAyZjU0ZjZkZDMzIiwidCI6IjIwODJkZTQ2LTFhZmEtNGI2NC1hNDQwLTY1NThmODBlOTg0MCIsImMiOjh9"
+                width="100%"
+                height="900"
+                frameborder="0"
+                allowfullscreen="true"
+                style="display:block; border-radius:12px; background:#0d1117;">
+            </iframe>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
