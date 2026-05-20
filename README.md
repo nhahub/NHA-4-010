@@ -349,6 +349,11 @@ After the Python ETL pipeline, data was further refined using **Power Query (Tra
 
 > **File location:** `powerbi/gold_oil_dashboard.pbix`
 
+<p align="center">
+  <img src="assets/PowerBI.jpeg" alt="PowerBI" width="100%"/>
+</p>
+
+
 ---
 
 ## 🖥️ Streamlit Application
@@ -375,6 +380,10 @@ streamlit run streamlit_app/app.py
 ```
 
 > **Note:** The app loads pre-trained `.pkl` model files from `ai model/`. Ensure the modeling notebooks have been executed at least once before running the app.
+
+<p align="center">
+  <img src="assets/Streamlite.jpeg" alt="Streamlite" width="100%"/>
+</p>
 
 ---
 
